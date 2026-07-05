@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>💌 LoveLetter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --pink:#FCEEEF;
+  --cream:#FFF9F7;
+  --rosegold:#B76E79;
+  --rosegold-light:#E7C9C2;
+  --rosegold-dark:#8F4A56;
+  --beige:#F3E7D8;
+  --beige-dark:#E4D2BA;
+  --ink:#5B4644;
+  --ink-soft:#8A7370;
+  --accent:#C98A93;
+  --gold:#C9A566;
+  --paper:#FFFDF8;
+  --shadow: 0 20px 60px -20px rgba(150,90,95,0.35);
+  --shadow-soft: 0 8px 24px -8px rgba(150,90,95,0.25);
+  --radius:24px;
+  --serif:'Cormorant Garamond', serif;
+  --script:'Dancing Script', cursive;
+  --sans:'Quicksand', sans-serif;
+}
+body.midnight{
+  --pink:#241B2F;
+  --cream:#1B1420;
+  --rosegold:#D8A7B1;
+  --rosegold-light:#5A3E48;
+  --rosegold-dark:#F0C6CE;
+  --beige:#2A2130;
+  --beige-dark:#3A2E40;
+  --ink:#F1E4E6;
+  --ink-soft:#C9B7BC;
+  --accent:#E7A6B3;
+  --gold:#E3C989;
+  --paper:#241B2A;
+  --shadow: 0 20px 60px -20px rgba(0,0,0,0.6);
+  --shadow-soft: 0 8px 24px -8px rgba(0,0,0,0.5);
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:var(--sans);
+  color:var(--ink);
+  background: linear-gradient(180deg,var(--pink) 0%, var(--cream) 60%);
+  min-height:100vh;
+  overflow-x:hidden;
+  transition: background .5s ease, color .5s ease;
+}
+#app{position:relative; min-height:100vh;}
+::selection{background:var(--rosegold-light); color:var(--ink);}
+a{color:inherit;}
+button{font-family:var(--sans); cursor:pointer;}
+h1,h2,h3{font-family:var(--script); font-weight:700; margin:0 0 6px 0;}
+.serif{font-family:var(--serif);}
+.eyebrow{
+  font-family:var(--sans); letter-spacing:.14em; text-transform:uppercase;
+  font-size:.68rem; color:var(--rosegold); font-weight:700;
+}
+
+/* ============ AMBIENT LAYER ============ */
+#ambient{position:fixed; inset:0; pointer-events:none; z-index:1; overflow:hidden;}
+.petal{position:absolute; top:-40px; font-size:22px; opacity:.85; animation: fall linear infinite;}
+.sparkle{position:absolute; font-size:14px; opacity:0; animation: twinkle 3.2s ease-in-out infinite;}
+.butterfly{position:absolute; font-size:20px; animation: flutter 14s linear infinite;}
+@keyframes fall{
+  0%{transform:translateY(-10vh) translateX(0) rotate(0deg); opacity:.9;}
+  100%{transform:translateY(110vh) translateX(40px) rotate(340deg); opacity:.4;}
+}
+@keyframes twinkle{
+  0%,100%{opacity:0; transform:scale(.6);}
+  50%{opacity:1; transform:scale(1.1);}
+}
+@keyframes flutter{
+  0%{transform:translate(-5vw,20vh) rotate(0deg);}
+  25%{transform:translate(30vw,10vh) rotate(15deg);}
+  50%{transform:translate(60vw,35vh) rotate(-10deg);}
+  75%{transform:translate(85vw,15vh) rotate(10deg);}
+  100%{transform:translate(105vw,25vh) rotate(0deg);}
+}
+.heart-rise{position:fixed; bottom:-30px; font-size:20px; z-index:60; animation: rise 3.5s ease-in forwards; pointer-events:none;}
+@keyframes rise{
+  0%{transform:translateY(0) scale(.8); opacity:1;}
+  100%{transform:translateY(-100vh) scale(1.3); opacity:0;}
+}
+
+/* ============ LAYOUT SHELLS ============ */
+.screen{position:relative; z-index:2; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:32px 18px;}
+.container{width:100%; max-width:640px;}
+.wide{max-width:900px;}
+
+/* ============ WELCOME ============ */
+#welcome-content{text-align:center;}
+.brand-mark{font-size:2.6rem; margin-bottom:2px;}
+#welcome-content h1{font-size:3.2rem; color:var(--rosegold-dark); line-height:1.05; text-shadow:0 2px 0 rgba(255,255,255,.5);}
+.welcome-quote{font-family:var(--serif); font-style:italic; font-size:1.35rem; color:var(--ink-soft); max-width:480px; margin:14px auto 34px;}
+.btn-row{display:flex; gap:14px; justify-content:center; flex-wrap:wrap;}
+.btn{
+  border:none; border-radius:999px; padding:14px 30px; font-weight:700; font-size:.95rem;
+  box-shadow:var(--shadow-soft); transition: transform .18s ease, box-shadow .18s ease;
+  display:inline-flex; align-items:center; gap:8px;
+}
+.btn:hover{transform:translateY(-2px) scale(1.02); box-shadow:var(--shadow);}
+.btn:active{transform:translateY(0) scale(.98);}
+.btn-primary{background:linear-gradient(135deg,var(--rosegold),var(--rosegold-dark)); color:#fff;}
+.btn-outline{background:var(--paper); color:var(--rosegold-dark); border:1.5px solid var(--rosegold-light);}
+.btn-ghost{background:transparent; color:var(--ink-soft); box-shadow:none; padding:10px 16px;}
+.btn-sm{padding:9px 18px; font-size:.82rem;}
+.btn:disabled{opacity:.5; cursor:not-allowed; transform:none;}
+
+/* ============ TOP NAV ============ */
+.topnav{position:fixed; top:0; left:0; right:0; z-index:40; display:flex; align-items:center; justify-content:space-between;
+  padding:14px 22px; backdrop-filter:blur(10px); background:rgba(255,255,255,.35); border-bottom:1px solid rgba(255,255,255,.4);}
+body.midnight .topnav{background:rgba(20,14,22,.5); border-bottom:1px solid rgba(255,255,255,.06);}
+.topnav .logo{font-family:var(--script); font-size:1.4rem; color:var(--rosegold-dark); font-weight:700;}
+.topnav .nav-actions{display:flex; gap:10px; align-items:center;}
+.icon-btn{background:var(--paper); border:1px solid var(--rosegold-light); width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; box-shadow:var(--shadow-soft);}
+
+/* ============ CARD / GLASS ============ */
+.glass{
+  background:rgba(255,253,248,.72); backdrop-filter:blur(14px);
+  border:1px solid rgba(255,255,255,.6); border-radius:var(--radius); box-shadow:var(--shadow);
+}
+body.midnight .glass{background:rgba(36,27,42,.72); border:1px solid rgba(255,255,255,.08);}
+
+/* ============ FORM ============ */
+.form-card{padding:34px 30px; margin-top:70px;}
+.field{margin-bottom:18px;}
+.field label{display:block; font-size:.78rem; font-weight:700; color:var(--rosegold-dark); margin-bottom:6px; letter-spacing:.03em;}
+.field input, .field select, .field textarea{
+  width:100%; padding:12px 14px; border-radius:14px; border:1.5px solid var(--beige-dark);
+  background:var(--paper); font-family:var(--sans); font-size:.95rem; color:var(--ink);
+}
+.field textarea{font-family:var(--serif); font-size:1.15rem; min-height:180px; resize:vertical; line-height:1.6;}
+.field input:focus, .field select:focus, .field textarea:focus{outline:2px solid var(--rosegold-light); border-color:var(--rosegold);}
+.two-col{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+@media(max-width:560px){.two-col{grid-template-columns:1fr;}}
+.hint{font-size:.75rem; color:var(--ink-soft); margin-top:4px;}
+.toolbar{display:flex; gap:6px; margin-bottom:8px; flex-wrap:wrap;}
+.toolbar button{background:var(--beige); border:1px solid var(--beige-dark); border-radius:8px; width:32px; height:32px; font-size:.85rem;}
+.toolbar button.active{background:var(--rosegold-light);}
+
+/* ============ STICKER PICKER + CANVAS ============ */
+.sticker-panel{display:flex; flex-wrap:wrap; gap:8px; padding:12px; background:var(--beige); border-radius:16px; margin-bottom:14px;}
+.sticker-panel button{background:var(--paper); border:1px solid var(--beige-dark); border-radius:12px; font-size:20px; width:42px; height:42px;}
+.letter-canvas-wrap{position:relative; border:2px dashed var(--rosegold-light); border-radius:18px; min-height:160px; padding:10px; background:repeating-linear-gradient(var(--paper),var(--paper) 27px,var(--beige-dark) 28px);}
+.placed-sticker{position:absolute; font-size:30px; cursor:grab; user-select:none; touch-action:none; filter:drop-shadow(0 3px 4px rgba(0,0,0,.15));}
+.placed-sticker:active{cursor:grabbing;}
+.placed-sticker .del{position:absolute; top:-10px; right:-10px; background:var(--rosegold-dark); color:#fff; border-radius:50%; width:16px; height:16px; font-size:10px; line-height:16px; text-align:center;}
+
+/* ============ ENVELOPE ============ */
+.envelope-stage{display:flex; flex-direction:column; align-items:center; gap:26px; text-align:center;}
+.envelope{position:relative; width:280px; height:190px; cursor:pointer;}
+.env-body{position:absolute; inset:0; background:linear-gradient(160deg,var(--rosegold-light),var(--rosegold)); border-radius:10px; box-shadow:var(--shadow);}
+.env-flap{position:absolute; top:0; left:0; width:100%; height:0; border-left:140px solid transparent; border-right:140px solid transparent; border-top:95px solid var(--rosegold-dark); transform-origin:top; transition: transform 1s cubic-bezier(.6,-0.28,.5,1.4); border-radius:6px 6px 0 0;}
+.envelope.open .env-flap{transform:rotateX(180deg);}
+.seal{position:absolute; top:74px; left:50%; transform:translateX(-50%); width:52px; height:52px; border-radius:50%; background:radial-gradient(circle at 35% 30%, var(--gold), var(--rosegold-dark)); display:flex; align-items:center; justify-content:center; font-size:20px; box-shadow:0 4px 10px rgba(0,0,0,.25); z-index:5; transition:opacity .4s ease, transform .4s ease;}
+.envelope.open .seal{opacity:0; transform:translateX(-50%) scale(0.3) rotate(90deg);}
+.env-glow{position:absolute; inset:-20px; border-radius:20px; background:radial-gradient(circle,rgba(255,255,255,.5),transparent 70%); opacity:0; transition:opacity .6s ease;}
+.envelope.open .env-glow{opacity:1;}
+.tap-hint{font-size:.85rem; color:var(--ink-soft);}
+
+/* ============ LETTER PAPER ============ */
+.letter-paper{
+  background:var(--paper); border-radius:14px; box-shadow:var(--shadow);
+  padding:36px 32px; position:relative; max-width:560px; margin:0 auto;
+  background-image: linear-gradient(var(--paper),var(--paper)), repeating-linear-gradient(transparent,transparent 30px, var(--beige-dark) 31px);
+  background-blend-mode:normal;
+  animation: unfold .9s ease;
+}
+@keyframes unfold{ from{opacity:0; transform:translateY(24px) scaleY(.85); transform-origin:top;} to{opacity:1; transform:translateY(0) scaleY(1);} }
+.letter-head{display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px; flex-wrap:wrap; gap:6px;}
+.letter-title{font-family:var(--script); font-size:2.1rem; color:var(--rosegold-dark);}
+.letter-meta{font-size:.78rem; color:var(--ink-soft);}
+.letter-body{font-family:var(--serif); font-size:1.2rem; line-height:1.85; white-space:pre-wrap; min-height:120px;}
+.letter-photo{max-width:100%; border-radius:10px; margin:14px 0; box-shadow:var(--shadow-soft); border:6px solid #fff;}
+.cursor-blink{display:inline-block; width:2px; background:var(--ink); margin-left:2px; animation:blink 1s step-start infinite;}
+@keyframes blink{50%{opacity:0;}}
+.type-controls{display:flex; gap:8px; justify-content:center; margin-top:16px; flex-wrap:wrap;}
+
+/* ============ PASSWORD GATE ============ */
+.gate-card{padding:44px 32px; text-align:center;}
+.gate-icon{font-size:2.4rem; margin-bottom:8px;}
+.gate-error{color:var(--rosegold-dark); font-family:var(--serif); font-style:italic; margin-top:10px; min-height:22px;}
+
+/* ============ MUSIC ============ */
+.music-block{margin-top:22px; padding:18px; border-radius:16px; background:var(--beige); text-align:left;}
+.music-dedication{font-family:var(--serif); font-style:italic; margin-bottom:10px; color:var(--ink-soft);}
+.yt-frame-wrap{border-radius:12px; overflow:hidden; box-shadow:var(--shadow-soft);}
+.yt-frame-wrap iframe{width:100%; aspect-ratio:16/9; border:0; display:block;}
+.play-song-btn{display:inline-flex; align-items:center; gap:8px; background:linear-gradient(135deg,var(--rosegold),var(--rosegold-dark)); color:#fff; border:none; border-radius:999px; padding:10px 20px; font-weight:700; font-size:.85rem; box-shadow:var(--shadow-soft);}
+
+/* ============ REACTIONS ============ */
+.reactions{display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:22px;}
+.reaction-btn{background:var(--paper); border:1.5px solid var(--rosegold-light); border-radius:999px; padding:8px 14px; font-size:.85rem;}
+.reaction-btn.picked{background:var(--rosegold-light);}
+.reaction-count{font-size:.7rem; color:var(--ink-soft); margin-left:4px;}
+
+/* ============ SHARE / QR ============ */
+.share-card{padding:34px 30px; text-align:center;}
+#qrcode{display:inline-block; padding:14px; background:#fff; border-radius:18px; border:4px solid var(--rosegold-light); box-shadow:var(--shadow-soft); margin:14px 0;}
+.link-row{display:flex; gap:8px; margin-top:10px;}
+.link-row input{flex:1; padding:10px 12px; border-radius:12px; border:1.5px solid var(--beige-dark); font-size:.8rem; background:var(--paper); color:var(--ink);}
+
+/* ============ SCRAPBOOK ============ */
+.scrapbook-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:18px; margin-top:24px;}
+.scrap-card{background:var(--paper); border-radius:18px; box-shadow:var(--shadow-soft); padding:16px; cursor:pointer; transition:transform .2s ease; position:relative;}
+.scrap-card:hover{transform:translateY(-4px) rotate(-.5deg);}
+.scrap-flower{position:absolute; top:-10px; right:-6px; font-size:22px;}
+.scrap-cat{font-size:.68rem; color:var(--rosegold); font-weight:700; text-transform:uppercase; letter-spacing:.06em;}
+.scrap-title{font-family:var(--script); font-size:1.4rem; color:var(--rosegold-dark); margin:4px 0;}
+.scrap-date{font-size:.72rem; color:var(--ink-soft);}
+.empty-state{text-align:center; color:var(--ink-soft); font-style:italic; font-family:var(--serif); margin-top:40px;}
+
+/* ============ ENDING ============ */
+.ending-stage{text-align:center;}
+.bloom{font-size:4rem; animation: bloomIn 1.2s ease;}
+@keyframes bloomIn{0%{transform:scale(0) rotate(-40deg); opacity:0;} 60%{transform:scale(1.2) rotate(8deg); opacity:1;} 100%{transform:scale(1) rotate(0);}}
+
+.footer-note{margin-top:40px; font-size:.72rem; color:var(--ink-soft); text-align:center; max-width:480px; line-height:1.6;}
+</style>
+</head>
+<body>
+<div id="ambient"></div>
+<div id="app"></div>
+
+<script>
+/* ======================================================================
+   LOVELETTER — client-side, no backend. Letters live entirely inside the
+   shareable link itself (optionally AES-encrypted with your password),
+   so a QR code / URL is all that's needed to send one.
+   ====================================================================== */
+
+/* ---------- ambient background decorations ---------- */
+const PETALS = ['🌸','🌷','🌹','🌼','💮','🍃'];
+function seedAmbient(){
+  const wrap = document.getElementById('ambient');
+  wrap.innerHTML='';
+  for(let i=0;i<16;i++){
+    const p=document.createElement('div');
+    p.className='petal';
+    p.textContent=PETALS[Math.floor(Math.random()*PETALS.length)];
+    p.style.left=Math.random()*100+'vw';
+    p.style.animationDuration=(9+Math.random()*10)+'s';
+    p.style.animationDelay=(Math.random()*10)+'s';
+    p.style.fontSize=(14+Math.random()*14)+'px';
+    wrap.appendChild(p);
+  }
+  for(let i=0;i<10;i++){
+    const s=document.createElement('div');
+    s.className='sparkle';
+    s.textContent='✨';
+    s.style.left=Math.random()*100+'vw';
+    s.style.top=Math.random()*100+'vh';
+    s.style.animationDelay=(Math.random()*3)+'s';
+    wrap.appendChild(s);
+  }
+  const b=document.createElement('div');
+  b.className='butterfly';
+  b.textContent='🦋';
+  b.style.animationDelay='1s';
+  wrap.appendChild(b);
+  const b2=document.createElement('div');
+  b2.className='butterfly';
+  b2.textContent='🦋';
+  b2.style.animationDelay='7s';
+  b2.style.top='10vh';
+  wrap.appendChild(b2);
+}
+function floatHearts(n=10){
+  for(let i=0;i<n;i++){
+    setTimeout(()=>{
+      const h=document.createElement('div');
+      h.className='heart-rise';
+      h.textContent=['💗','💖','💕','🩷'][Math.floor(Math.random()*4)];
+      h.style.left=(10+Math.random()*80)+'vw';
+      document.body.appendChild(h);
+      setTimeout(()=>h.remove(),3600);
+    }, i*160);
+  }
+}
+
+/* ---------- in-memory "scrapbook" (this browser session) ---------- */
+const scrapbook = []; // {id, letterObj, createdAt}
+
+/* ---------- crypto: password -> AES-GCM ---------- */
+async function deriveKey(password, saltBytes){
+  const enc = new TextEncoder();
+  const keyMaterial = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveKey']);
+  return crypto.subtle.deriveKey(
+    { name:'PBKDF2', salt: saltBytes, iterations: 120000, hash:'SHA-256' },
+    keyMaterial, { name:'AES-GCM', length:256 }, false, ['encrypt','decrypt']
+  );
+}
+function b64urlEncode(bytes){
+  let bin=''; bytes.forEach(b=>bin+=String.fromCharCode(b));
+  return btoa(bin).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+function b64urlDecode(str){
+  str = str.replace(/-/g,'+').replace(/_/g,'/');
+  while(str.length%4) str+='=';
+  const bin = atob(str);
+  const bytes = new Uint8Array(bin.length);
+  for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
+  return bytes;
+}
+async function compressBytes(str){
+  const raw = new TextEncoder().encode(str);
+  if('CompressionStream' in window){
+    try{
+      const cs = new CompressionStream('gzip');
+      const writer = cs.writable.getWriter();
+      writer.write(raw); writer.close();
+      const buf = await new Response(cs.readable).arrayBuffer();
+      return { bytes: new Uint8Array(buf), gz:true };
+    }catch(e){ /* fall through */ }
+  }
+  return { bytes: raw, gz:false };
+}
+async function decompressBytes(bytes, gz){
+  if(gz && 'DecompressionStream' in window){
+    const ds = new DecompressionStream('gzip');
+    const writer = ds.writable.getWriter();
+    writer.write(bytes); writer.close();
+    const buf = await new Response(ds.readable).arrayBuffer();
+    return new TextDecoder().decode(buf);
+  }
+  return new TextDecoder().decode(bytes);
+}
+async function encryptLetter(obj, password){
+  const json = JSON.stringify(obj);
+  const { bytes, gz } = await compressBytes(json);
+  const marker = gz ? 'g' : 'r';
+  if(!password){
+    return 'P0'+marker+'.' + b64urlEncode(bytes);
+  }
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const key = await deriveKey(password, salt);
+  const cipher = await crypto.subtle.encrypt({name:'AES-GCM', iv}, key, bytes);
+  const cipherBytes = new Uint8Array(cipher);
+  return 'P1'+marker+'.' + b64urlEncode(salt) + '.' + b64urlEncode(iv) + '.' + b64urlEncode(cipherBytes);
+}
+async function decryptLetter(payload, password){
+  const dotParts = payload.split('.');
+  const head = dotParts[0];
+  const version = head.slice(0,2);
+  const gz = head.slice(2) === 'g';
+  if(version==='P0'){
+    const bytes = b64urlDecode(dotParts[1]);
+    const json = await decompressBytes(bytes, gz);
+    return JSON.parse(json);
+  }
+  if(version==='P1'){
+    const salt = b64urlDecode(dotParts[1]);
+    const iv = b64urlDecode(dotParts[2]);
+    const cipherBytes = b64urlDecode(dotParts[3]);
+    const key = await deriveKey(password||'', salt);
+    const plainBuf = await crypto.subtle.decrypt({name:'AES-GCM', iv}, key, cipherBytes);
+    const json = await decompressBytes(new Uint8Array(plainBuf), gz);
+    return JSON.parse(json);
+  }
+  throw new Error('Unrecognized letter format');
+}
+function isEncryptedPayload(payload){ return payload.startsWith('P1'); }
+
+/* ======================================================================
+   SHARING BACKEND
+   Letters are never embedded in the URL. Each saved letter gets a short
+   ID; the ID is the only thing that goes in the link/QR. The full letter
+   (already gzip'd + optionally AES-encrypted by password) is stored in a
+   real database keyed by that ID, along with lightweight metadata used
+   for read counts, comments, expiration, and one-time access.
+
+   >>> TO GO LIVE: create a free Supabase project and fill these two
+   values in. Nothing else in this file needs to change. <<<
+   ====================================================================== */
+const SUPABASE_URL = '';        // e.g. 'https://xxxxxxxx.supabase.co'
+const SUPABASE_ANON_KEY = '';   // your project's public "anon" key
+
+/* One-time Supabase setup (SQL editor):
+   create table letters (
+     id text primary key,
+     payload text not null,
+     created_at timestamptz default now(),
+     expires_at timestamptz,
+     one_time boolean default false,
+     reads int default 0,
+     opened_log jsonb default '[]'::jsonb,
+     comments jsonb default '[]'::jsonb,
+     reactions jsonb default '{}'::jsonb
+   );
+   alter table letters enable row level security;
+   create policy "public insert" on letters for insert with check (true);
+   create policy "public select" on letters for select using (true);
+   create policy "public update" on letters for update using (true);
+   create policy "public delete" on letters for delete using (true);
+   -- Safe to leave publicly readable/writable by ID: password-protected
+   -- letters are AES-encrypted before they're ever stored, so the row's
+   -- content is useless without the password. Anyone acting on a row
+   -- still has to know its unguessable ID first.
+*/
+
+function backendConfigured(){ return !!(SUPABASE_URL && SUPABASE_ANON_KEY); }
+function sbHeaders(extra){
+  return Object.assign({ 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` }, extra||{});
+}
+async function backendSave(id, payload, meta){
+  const row = Object.assign({ id, payload }, meta||{});
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/letters`, {
+    method:'POST',
+    headers: sbHeaders({ 'Content-Type':'application/json', 'Prefer':'return=minimal' }),
+    body: JSON.stringify([row])
+  });
+  return res.ok;
+}
+async function backendGetRow(id){
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/letters?id=eq.${encodeURIComponent(id)}&select=*`, { headers: sbHeaders() });
+  if(!res.ok) throw new Error('lookup failed');
+  const rows = await res.json();
+  if(!rows.length) throw new Error('not found');
+  return rows[0];
+}
+async function backendGet(id){ return (await backendGetRow(id)).payload; }
+async function backendPatch(id, fields){
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/letters?id=eq.${encodeURIComponent(id)}`, {
+    method:'PATCH',
+    headers: sbHeaders({ 'Content-Type':'application/json', 'Prefer':'return=minimal' }),
+    body: JSON.stringify(fields)
+  });
+  return res.ok;
+}
+async function backendDelete(id){
+  try{
+    await fetch(`${SUPABASE_URL}/rest/v1/letters?id=eq.${encodeURIComponent(id)}`, { method:'DELETE', headers: sbHeaders() });
+  }catch(e){ /* best-effort */ }
+}
+async function backendRegisterOpen(row){
+  try{
+    const log = Array.isArray(row.opened_log) ? row.opened_log.slice(-19) : [];
+    log.push(new Date().toISOString());
+    await backendPatch(row.id, { reads: (row.reads||0) + 1, opened_log: log });
+  }catch(e){ /* non-critical, ignore */ }
+}
+async function backendAddComment(id, row, text){
+  const comments = Array.isArray(row.comments) ? row.comments.slice() : [];
+  comments.push({ text, at: new Date().toISOString() });
+  await backendPatch(id, { comments });
+  return comments;
+}
+async function backendBumpReaction(id, row, key){
+  const reactions = Object.assign({}, row.reactions||{});
+  reactions[key] = (reactions[key]||0) + 1;
+  try{ await backendPatch(id, { reactions }); }catch(e){ /* non-critical */ }
+  return reactions;
+}
+
+function isLocalOrFile(){
+  return location.protocol === 'file:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+}
+function storageAvailable(){ return typeof window!=='undefined' && !!window.storage; }
+
+const ID_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // no 0/O/1/I — avoids confusion when handwritten
+function randomId(len){
+  const bytes = crypto.getRandomValues(new Uint8Array(len));
+  let id='';
+  for(let i=0;i<len;i++) id += ID_CHARS[bytes[i]%ID_CHARS.length];
+  return id;
+}
+async function pickFreeBackendId(len){
+  for(let i=0;i<5;i++){
+    const id = randomId(len);
+    try{ await backendGet(id); } // exists — try another
+    catch(e){ return id; }       // not found — free to use
+  }
+  return randomId(len+3);
+}
+async function pickFreeClaudeId(len){
+  for(let i=0;i<5;i++){
+    const id = randomId(len);
+    try{ await window.storage.get('letter:'+id, true); }
+    catch(e){ return id; }
+  }
+  return randomId(len+3);
+}
+
+/**
+ * Saves a letter and returns { mode, url, id } or { mode:'disabled', reason }.
+ * mode 'backend' = real, permanent, production-ready link (works for anyone, anywhere).
+ * mode 'claude'  = temporary preview link, only resolvable while opened inside Claude.
+ * mode 'disabled'= no working backend available right now.
+ */
+async function shareLetter(payload, meta){
+  if(backendConfigured()){
+    try{
+      const id = await pickFreeBackendId(7);
+      const ok = await backendSave(id, payload, meta);
+      if(ok) return { mode:'backend', id, url: location.origin + '/letter/' + id };
+    }catch(e){ /* fall through */ }
+  }
+  if(storageAvailable()){
+    try{
+      const id = await pickFreeClaudeId(7);
+      const ok = await window.storage.set('letter:'+id, payload, true);
+      if(ok) return { mode:'claude', id, url: location.origin + location.pathname + '#L=' + id };
+    }catch(e){ /* fall through */ }
+  }
+  return { mode:'disabled', reason: isLocalOrFile()
+    ? 'QR sharing is only available after deploying the website.'
+    : "Sharing isn't set up yet — add your Supabase project URL and key near the top of the script." };
+}
+async function regenerateLink(oldId, oldMode, payload, meta){
+  if(oldMode === 'backend'){
+    const result = await shareLetter(payload, meta);
+    if(result.mode === 'backend') backendDelete(oldId); // best-effort revoke of the old link
+    return result;
+  }
+  return shareLetter(payload, meta);
+}
+async function resolveShortLink(id){
+  const res = await window.storage.get('letter:'+id, true);
+  return res.value;
+}
+function renderQR(mountEl, url){
+  mountEl.innerHTML = '';
+  try{
+    const inst = new QRCode(mountEl, { text:url, width:180, height:180, colorDark:'#8F4A56', colorLight:'#ffffff', correctLevel: QRCode.CorrectLevel.M });
+    mountEl._qrInstance = inst;
+  }catch(e){
+    mountEl.style.display='flex'; mountEl.style.flexDirection='column';
+    mountEl.style.alignItems='center'; mountEl.style.justifyContent='center';
+    mountEl.style.width='180px'; mountEl.style.height='180px'; mountEl.style.margin='14px auto';
+    mountEl.style.textAlign='center'; mountEl.style.padding='16px';
+    mountEl.innerHTML = `<div style="font-size:24px;">🥀</div><div style="font-size:.72rem; color:var(--ink-soft); margin-top:6px;">Couldn't generate a QR code. Copy the link instead.</div>`;
+  }
+}
+function qrToSVG(mountEl){
+  // qrcodejs draws either a <canvas> or a table of <img>/<td> cells depending on browser support.
+  // Reconstruct an SVG from whichever DOM it produced.
+  const canvas = mountEl.querySelector('canvas');
+  const table = mountEl.querySelector('table');
+  let cells = null, size = 0;
+  if(table){
+    const rows = table.querySelectorAll('tr');
+    size = rows.length;
+    cells = [];
+    rows.forEach(tr=>{
+      const row = [];
+      tr.querySelectorAll('td').forEach(td=>{
+        row.push(td.style.backgroundColor && td.style.backgroundColor !== 'transparent' && td.style.backgroundColor !== 'rgb(255, 255, 255)');
+      });
+      cells.push(row);
+    });
+  } else if(canvas){
+    // sample the canvas pixel grid back into a boolean matrix
+    const ctx = canvas.getContext('2d');
+    const w = canvas.width;
+    const modules = 33; // qrcodejs default module count varies; sample proportionally instead
+    return canvasToSVG(canvas);
+  }
+  if(!cells) return null;
+  const cell = 8;
+  const svgSize = size * cell;
+  let rects = '';
+  cells.forEach((row,y)=>{
+    row.forEach((dark,x)=>{
+      if(dark) rects += `<rect x="${x*cell}" y="${y*cell}" width="${cell}" height="${cell}" fill="#8F4A56"/>`;
+    });
+  });
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${svgSize} ${svgSize}" width="${svgSize}" height="${svgSize}"><rect width="100%" height="100%" fill="#ffffff"/>${rects}</svg>`;
+}
+function canvasToSVG(canvas){
+  // Fallback: embed the canvas bitmap inside an SVG wrapper (still a valid, scannable .svg file).
+  const dataUrl = canvas.toDataURL('image/png');
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${canvas.width}" height="${canvas.height}"><image href="${dataUrl}" width="${canvas.width}" height="${canvas.height}"/></svg>`;
+}
+
+/* ---------- routing ---------- */
+const app = document.getElementById('app');
+let state = {
+  draft: { to:'', from:'', title:'', date:new Date().toISOString().slice(0,10), category:'Love Letter', password:'', hint:'', body:'', photo:null, photoUrl:'', youtube:'', dedication:'', stickers:[], expiresAt:'', oneTime:false },
+  reactions: {},
+  shareURL: '',
+  incomingPayload: null,
+  unlockedLetter: null,
+};
+
+const CATEGORIES = ['Love Letter','Apology Letter','Thank You Letter','Good Morning','Good Night','Long Distance','Anniversary','Birthday','Encouragement','Future Letter','Open When...','Random Thoughts','Forever Letter'];
+const STICKERS = ['🌹','🌸','🌼','🌷','💐','🪻','🌺','🍃','🐷','🧸','💌','☁️','🦋','⭐','🎀','☕','🌙','☀️','✉️','🖇️'];
+const CATEGORY_FLOWER = {'Love Letter':'🌹','Anniversary':'💐','Birthday':'🎂','Good Morning':'☀️','Good Night':'🌙','Long Distance':'✈️','Thank You Letter':'🌼','Apology Letter':'🌷','Encouragement':'🌻','Future Letter':'⏳','Open When...':'📖','Random Thoughts':'🍃','Forever Letter':'♾️'};
+
+function render(html){ app.innerHTML = html; window.scrollTo(0,0); }
+function extractYouTubeId(url){
+  if(!url) return null;
+  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+
+/* ================= WELCOME ================= */
+function viewWelcome(){
+  render(`
+  <div class="screen">
+    <div class="container" id="welcome-content">
+      <div class="brand-mark">💌</div>
+      <h1>LoveLetter</h1>
+      <p class="welcome-quote">"Every letter holds a piece of someone's heart."</p>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="btn-enter">💌 Enter</button>
+        <button class="btn btn-outline" id="btn-open-mine">❤️ Open My Letter</button>
+      </div>
+      <p class="footer-note">Write a letter, decorate it, tuck a song inside, and send it as a private link or QR code — no account needed. If you set a password, the letter is encrypted right in your browser, so only someone with the password can ever read it.</p>
+    </div>
+  </div>`);
+  document.getElementById('btn-enter').onclick=()=>viewDashboard();
+  document.getElementById('btn-open-mine').onclick=async ()=>{
+    const pasted = prompt('Paste the letter link you received:');
+    if(!pasted) return;
+    try{
+      let url;
+      try{ url = new URL(pasted); }catch(e){ url = null; }
+      const pathMatch = url ? url.pathname.match(/\/(?:letter|l)\/([A-Za-z0-9]+)\/?$/) : null;
+      if(pathMatch){
+        if(!backendConfigured()){ viewLinkNotFound(); return; }
+        await openBackendLetter(pathMatch[1]);
+        return;
+      }
+      const hash = pasted.includes('#') ? pasted.split('#')[1] : '';
+      if(hash.startsWith('L=')){
+        if(!storageAvailable()){ viewLinkNotFound(); return; }
+        const id = decodeURIComponent(hash.slice(2));
+        openIncoming(await resolveShortLink(id), { id, mode:'claude', row:null });
+      } else if(hash.startsWith('letter=')){
+        openIncoming(decodeURIComponent(hash.slice('letter='.length)), null);
+      } else {
+        alert("That doesn't look like a LoveLetter link — try pasting the full link starting with the site address.");
+      }
+    }catch(e){ viewLinkNotFound(); }
+  };
+}
+
+/* ================= TOPNAV ================= */
+function topnav(active){
+  return `
+  <div class="topnav">
+    <div class="logo" style="cursor:pointer" onclick="viewWelcome()">💌 LoveLetter</div>
+    <div class="nav-actions">
+      <button class="icon-btn" title="Scrapbook" onclick="viewScrapbook()">📖</button>
+      <button class="icon-btn" title="Write a letter" onclick="viewCompose()">✍️</button>
+      <button class="icon-btn" id="dark-toggle" title="Midnight Love theme">🌙</button>
+    </div>
+  </div>`;
+}
+function bindTopnav(){
+  document.getElementById('dark-toggle').onclick = ()=>{
+    document.body.classList.toggle('midnight');
+  };
+}
+
+/* ================= DASHBOARD ================= */
+function viewDashboard(){
+  const daysWritten = scrapbook.length;
+  render(`
+    ${topnav()}
+    <div class="screen" style="padding-top:100px;">
+      <div class="container wide">
+        <div class="eyebrow">Our Dashboard</div>
+        <h1 style="font-size:2.2rem;">Welcome back 🌷</h1>
+        <div class="two-col" style="margin-top:20px;">
+          <div class="glass" style="padding:22px;">
+            <div class="eyebrow">Letters Written</div>
+            <div style="font-size:2rem; font-family:var(--script); color:var(--rosegold-dark);">${daysWritten}</div>
+          </div>
+          <div class="glass" style="padding:22px;">
+            <div class="eyebrow">Today</div>
+            <div class="serif" style="font-size:1.3rem;">${new Date().toLocaleDateString(undefined,{weekday:'long', month:'long', day:'numeric'})}</div>
+          </div>
+        </div>
+        <div class="btn-row" style="margin-top:26px; justify-content:flex-start;">
+          <button class="btn btn-primary" onclick="viewCompose()">✍️ Write a New Letter</button>
+          <button class="btn btn-outline" onclick="viewScrapbook()">📖 Open Scrapbook</button>
+        </div>
+        <p class="footer-note" style="text-align:left; margin-top:30px;">Letters you write in this session appear in your scrapbook below on this device. To actually send one, use "Save & Get Link" — the letter itself travels inside that link, so it works on any device, even if this scrapbook is empty there.</p>
+      </div>
+    </div>
+  `);
+  bindTopnav();
+}
+
+/* ================= COMPOSE ================= */
+function viewCompose(){
+  const d = state.draft;
+  render(`
+    ${topnav()}
+    <div class="screen" style="padding-top:90px; align-items:flex-start;">
+      <div class="container wide">
+        <div class="glass form-card" style="margin-top:0;">
+          <div class="eyebrow">Write a Letter</div>
+          <h2 style="font-size:2rem;">💌 A Letter From the Heart</h2>
+
+          <div class="two-col">
+            <div class="field"><label>To</label><input id="f-to" value="${esc(d.to)}" placeholder="My love"></div>
+            <div class="field"><label>From</label><input id="f-from" value="${esc(d.from)}" placeholder="Your name"></div>
+          </div>
+          <div class="two-col">
+            <div class="field"><label>Letter Title</label><input id="f-title" value="${esc(d.title)}" placeholder="For the one who..."></div>
+            <div class="field"><label>Date</label><input id="f-date" type="date" value="${d.date}"></div>
+          </div>
+          <div class="field">
+            <label>Category</label>
+            <select id="f-category">${CATEGORIES.map(c=>`<option ${c===d.category?'selected':''}>${c}</option>`).join('')}</select>
+          </div>
+
+          <div class="two-col">
+            <div class="field"><label>Password (optional)</label><input id="f-password" type="text" value="${esc(d.password)}" placeholder="Leave blank for no password"></div>
+            <div class="field"><label>Password Hint</label><input id="f-hint" value="${esc(d.hint)}" placeholder="Where we first met..."></div>
+          </div>
+          <div class="two-col">
+            <div class="field"><label>Expires On (optional)</label><input id="f-expires" type="date" value="${esc(d.expiresAt||'')}"></div>
+            <div class="field" style="display:flex; align-items:flex-end; padding-bottom:8px;">
+              <label style="display:flex; align-items:center; gap:8px; font-weight:600; color:var(--ink); margin:0;">
+                <input id="f-onetime" type="checkbox" style="width:auto;" ${d.oneTime?'checked':''}> One-time view (letter seals itself after it's opened once)
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Your Letter</label>
+            <div class="toolbar">
+              <button type="button" data-cmd="bold"><b>B</b></button>
+              <button type="button" data-cmd="italic"><i>I</i></button>
+              <button type="button" data-cmd="underline"><u>U</u></button>
+            </div>
+            <textarea id="f-body" placeholder="Dearest...">${esc(d.body)}</textarea>
+            <div class="hint">Tip: type **bold**, _italic_, or __underline__ — it renders when your letter is opened.</div>
+          </div>
+
+          <div class="field">
+            <label>Decorate Your Letter</label>
+            <div class="sticker-panel" id="sticker-panel">
+              ${STICKERS.map(s=>`<button type="button" data-sticker="${s}">${s}</button>`).join('')}
+            </div>
+            <div class="letter-canvas-wrap" id="canvas">
+              ${d.stickers.map((s,i)=>stickerHTML(s,i)).join('')}
+              <div style="text-align:center; color:var(--ink-soft); font-style:italic; padding:30px 0; pointer-events:none;">${d.stickers.length? '' : 'Click a sticker above — drag it once it appears'}</div>
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="field"><label>📸 Photo (upload)</label><input id="f-photo" type="file" accept="image/*"></div>
+            <div class="field"><label>🔗 Or Photo Link (keeps letter link short)</label><input id="f-photo-url" value="${esc(d.photoUrl||'')}" placeholder="https://example.com/photo.jpg"></div>
+          </div>
+          <div class="hint" style="margin:-6px 0 12px;">A pasted photo link makes a far shorter, more reliably scannable QR than an uploaded photo — uploads get compressed automatically, but still add real size.</div>
+          <div class="field"><label>🎵 YouTube Song URL</label><input id="f-youtube" value="${esc(d.youtube)}" placeholder="https://youtube.com/watch?v=..."></div>
+          <div class="field"><label>Why I chose this song...</label><input id="f-dedication" value="${esc(d.dedication)}" placeholder="Whenever I hear this, I think of you."></div>
+
+          <div class="btn-row" style="justify-content:flex-end; margin-top:10px;">
+            <button class="btn btn-ghost" onclick="viewDashboard()">Cancel</button>
+            <button class="btn btn-outline" id="btn-preview">👀 Preview</button>
+            <button class="btn btn-primary" id="btn-save">💾 Save &amp; Get Link</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `);
+  bindTopnav();
+  bindComposeEvents();
+}
+function stickerHTML(s,i){
+  return `<div class="placed-sticker" data-idx="${i}" style="left:${s.x}px; top:${s.y}px;">${s.emoji}<span class="del" data-del="${i}">×</span></div>`;
+}
+function bindComposeEvents(){
+  const canvas = document.getElementById('canvas');
+  document.getElementById('sticker-panel').addEventListener('click', e=>{
+    const btn = e.target.closest('button[data-sticker]');
+    if(!btn) return;
+    state.draft.stickers.push({emoji:btn.dataset.sticker, x: 20+Math.random()*180, y: 10+Math.random()*60});
+    saveFieldsToDraft();
+    viewCompose();
+  });
+  canvas.addEventListener('click', e=>{
+    const del = e.target.closest('[data-del]');
+    if(del){ state.draft.stickers.splice(+del.dataset.del,1); saveFieldsToDraft(); viewCompose(); }
+  });
+  // dragging
+  canvas.querySelectorAll('.placed-sticker').forEach(el=>{
+    el.addEventListener('pointerdown', ev=>{
+      ev.preventDefault();
+      const idx = +el.dataset.idx;
+      const rect = canvas.getBoundingClientRect();
+      function move(e){
+        const x = Math.max(0, Math.min(rect.width-30, e.clientX-rect.left-15));
+        const y = Math.max(0, Math.min(rect.height-30, e.clientY-rect.top-15));
+        state.draft.stickers[idx].x = x; state.draft.stickers[idx].y = y;
+        el.style.left = x+'px'; el.style.top = y+'px';
+      }
+      function up(){ window.removeEventListener('pointermove',move); window.removeEventListener('pointerup',up); }
+      window.addEventListener('pointermove',move);
+      window.addEventListener('pointerup',up);
+    });
+  });
+  document.querySelectorAll('.toolbar [data-cmd]').forEach(btn=>{
+    btn.onclick=()=>{
+      const ta = document.getElementById('f-body');
+      const wrap = {bold:'**', italic:'_', underline:'__'}[btn.dataset.cmd];
+      const start = ta.selectionStart, end = ta.selectionEnd;
+      const sel = ta.value.slice(start,end) || 'text';
+      ta.value = ta.value.slice(0,start) + wrap + sel + wrap + ta.value.slice(end);
+      saveFieldsToDraft();
+    };
+  });
+  document.getElementById('btn-preview').onclick=()=>{ saveFieldsToDraft(); handlePhotoThen(()=>viewReadLetter(state.draft, {preview:true})); };
+  document.getElementById('btn-save').onclick=()=>{ saveFieldsToDraft(); handlePhotoThen(()=>saveAndShare()); };
+}
+function handlePhotoThen(cb){
+  const urlVal = (document.getElementById('f-photo-url')||{}).value || '';
+  if(urlVal.trim()){
+    state.draft.photo = urlVal.trim();
+    cb();
+    return;
+  }
+  const fileInput = document.getElementById('f-photo');
+  const file = fileInput && fileInput.files[0];
+  if(file){
+    const reader = new FileReader();
+    reader.onload = ()=>{
+      const img = new Image();
+      img.onload = ()=>{
+        const maxW = 480;
+        const scale = Math.min(1, maxW / img.width);
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.round(img.width * scale);
+        canvas.height = Math.round(img.height * scale);
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        state.draft.photo = canvas.toDataURL('image/jpeg', 0.6);
+        cb();
+      };
+      img.onerror = ()=>{ state.draft.photo = reader.result; cb(); };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  } else { cb(); }
+}
+function saveFieldsToDraft(){
+  const d = state.draft;
+  d.to=val('f-to'); d.from=val('f-from'); d.title=val('f-title'); d.date=val('f-date');
+  d.category=val('f-category'); d.password=val('f-password'); d.hint=val('f-hint'); d.body=val('f-body');
+  d.youtube=val('f-youtube'); d.dedication=val('f-dedication'); d.photoUrl=val('f-photo-url');
+  d.expiresAt=val('f-expires'); d.oneTime = !!(document.getElementById('f-onetime')||{}).checked;
+}
+function val(id){ const el=document.getElementById(id); return el? el.value : ''; }
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;'); }
+
+/* ================= SAVE & SHARE ================= */
+async function saveAndShare(){
+  const letterObj = JSON.parse(JSON.stringify(state.draft));
+  const hasPassword = !!letterObj.password;
+  const passwordToUse = letterObj.password;
+  delete letterObj.password; // never store plaintext password in payload
+  letterObj.hasPassword = hasPassword;
+  const expiresAt = letterObj.expiresAt ? new Date(letterObj.expiresAt+'T23:59:59').toISOString() : null;
+  const oneTime = !!letterObj.oneTime;
+  delete letterObj.expiresAt; delete letterObj.oneTime; // these live as row metadata, not inside the encrypted payload
+
+  const payload = await encryptLetter(letterObj, hasPassword ? passwordToUse : '');
+  scrapbook.push({ id: Date.now(), letterObj, createdAt: new Date().toISOString() });
+
+  render(`
+    ${topnav()}
+    <div class="screen" style="padding-top:90px;">
+      <div class="container">
+        <div class="glass share-card">
+          <div class="eyebrow">Ready to Send</div>
+          <h2 style="font-size:2rem;">❤️ Share this Love Letter</h2>
+          <p class="serif" style="font-size:1.05rem; color:var(--ink-soft);">${hasPassword? 'It’s encrypted with your password — only someone who knows it can open it.' : 'Anyone with this link can open it.'}</p>
+          <div id="share-body"><div class="hint">Sealing your letter…</div></div>
+          <div class="btn-row" style="margin-top:10px;">
+            <button class="btn btn-outline" onclick="viewReadLetter(${JSON.stringify(letterObj).replace(/"/g,'&quot;')}, {preview:true})">👀 View as Recipient</button>
+            <button class="btn btn-ghost" onclick="viewScrapbook()">📖 Back to Scrapbook</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `);
+  bindTopnav();
+
+  let result = await shareLetter(payload, { expires_at: expiresAt, one_time: oneTime });
+  renderShareResult(result, payload, letterObj, { expires_at: expiresAt, one_time: oneTime });
+}
+
+function renderShareResult(result, payload, letterObj, meta){
+  const body = document.getElementById('share-body');
+
+  if(result.mode === 'disabled'){
+    body.innerHTML = `
+      <div style="padding:20px; border-radius:16px; background:var(--beige); text-align:center;">
+        <div style="font-size:24px;">🌷</div>
+        <div class="serif" style="margin-top:6px; color:var(--ink-soft);">${result.reason}</div>
+      </div>`;
+    return;
+  }
+
+  const url = result.url;
+  state.shareURL = url;
+  const badge = result.mode === 'claude'
+    ? `<div class="hint">Preview link — only opens while inside Claude. Deploy the site (see SETUP.md) for a permanent public link.</div>`
+    : `<div class="hint">Public link — works for anyone, anywhere, once the site is deployed.${meta.expires_at? ' Expires '+new Date(meta.expires_at).toLocaleDateString()+'.':''}${meta.one_time? ' Seals itself after one opening.':''}</div>`;
+
+  body.innerHTML = `
+    <div id="qrcode"></div>
+    <div class="link-row">
+      <input id="share-url" readonly value="${url}">
+      <button class="btn btn-outline btn-sm" id="copy-link">Copy Link</button>
+    </div>
+    ${badge}
+    <div class="btn-row" style="margin-top:16px;">
+      <button class="btn btn-primary" id="download-qr">⬇️ PNG</button>
+      <button class="btn btn-outline" id="download-qr-svg">⬇️ SVG</button>
+      <button class="btn btn-outline" id="native-share">📤 Share</button>
+    </div>
+    <div class="btn-row" style="margin-top:8px;">
+      <button class="btn btn-ghost btn-sm" id="regenerate-link">🔄 Regenerate Link</button>
+    </div>
+    ${result.mode==='backend' ? `<div class="hint" id="scan-count">👁️ Checking scan count…</div>` : ''}
+  `;
+  renderQR(document.getElementById('qrcode'), url);
+
+  document.getElementById('copy-link').onclick=()=>{
+    navigator.clipboard.writeText(url).then(()=>{
+      document.getElementById('copy-link').textContent='Copied!';
+      setTimeout(()=>document.getElementById('copy-link').textContent='Copy Link',1500);
+    });
+  };
+  document.getElementById('download-qr').onclick=()=>{
+    const canvas = document.querySelector('#qrcode canvas');
+    if(!canvas){ alert('QR code not available — copy the link instead.'); return; }
+    const a = document.createElement('a');
+    a.href = canvas.toDataURL('image/png');
+    a.download = (letterObj.title||'love-letter')+'-qr.png';
+    a.click();
+  };
+  document.getElementById('download-qr-svg').onclick=()=>{
+    const svg = qrToSVG(document.getElementById('qrcode'));
+    if(!svg){ alert('SVG export not available for this QR — try PNG instead.'); return; }
+    const blob = new Blob([svg], {type:'image/svg+xml'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = (letterObj.title||'love-letter')+'-qr.svg';
+    a.click();
+  };
+  document.getElementById('native-share').onclick=async ()=>{
+    if(navigator.share){
+      try{ await navigator.share({ title: letterObj.title||'A Love Letter', text:'A letter written for you 💌', url }); }
+      catch(e){ /* user cancelled */ }
+    } else {
+      navigator.clipboard.writeText(url);
+      alert('Link copied — your browser doesn\'t support the native share sheet.');
+    }
+  };
+  document.getElementById('regenerate-link').onclick=async ()=>{
+    const btn = document.getElementById('regenerate-link');
+    btn.disabled = true; btn.textContent = 'Regenerating…';
+    const fresh = await regenerateLink(result.id, result.mode, payload, meta);
+    result = fresh;
+    renderShareResult(fresh, payload, letterObj, meta);
+  };
+  if(result.mode==='backend'){
+    backendGetRow(result.id).then(row=>{
+      const el = document.getElementById('scan-count');
+      if(el) el.innerHTML = `👁️ Opened ${row.reads||0} time${row.reads===1?'':'s'}${row.opened_log && row.opened_log.length ? ' · last: '+new Date(row.opened_log[row.opened_log.length-1]).toLocaleString() : ''}`;
+    }).catch(()=>{ const el=document.getElementById('scan-count'); if(el) el.textContent='👁️ Scan count unavailable right now.'; });
+  }
+}
+
+/* ================= SCRAPBOOK ================= */
+function viewScrapbook(){
+  render(`
+    ${topnav()}
+    <div class="screen" style="padding-top:90px; align-items:flex-start;">
+      <div class="container wide">
+        <div class="eyebrow">Our Scrapbook</div>
+        <h1 style="font-size:2.2rem;">📖 Every Letter, Kept</h1>
+        ${scrapbook.length? `<div class="scrapbook-grid">
+          ${scrapbook.slice().reverse().map(entry=>`
+            <div class="scrap-card" onclick='viewReadLetter(${JSON.stringify(entry.letterObj)}, {preview:true})'>
+              <div class="scrap-flower">${CATEGORY_FLOWER[entry.letterObj.category]||'🌸'}</div>
+              <div class="scrap-cat">${entry.letterObj.category}</div>
+              <div class="scrap-title">${esc(entry.letterObj.title)||'Untitled'}</div>
+              <div class="scrap-date">${entry.letterObj.date} · to ${esc(entry.letterObj.to)||'someone special'}</div>
+            </div>
+          `).join('')}
+        </div>` : `<div class="empty-state">Your scrapbook is empty — write your first letter and it will land here, like a pressed flower kept safe. 🌷</div>`}
+      </div>
+    </div>
+  `);
+  bindTopnav();
+}
+
+/* ================= INCOMING LINK: PASSWORD GATE ================= */
+function openIncoming(payload, ctx){
+  state.incomingPayload = payload;
+  if(isEncryptedPayload(payload)){
+    // need to peek at hint — hint isn't stored outside encryption in this simple scheme,
+    // so recipient just enters the password they were told.
+    viewPasswordGate(ctx);
+  } else {
+    decryptLetter(payload,'').then(obj=>viewEnvelope(obj, ctx));
+  }
+}
+function viewPasswordGate(ctx){
+  render(`
+    <div class="screen">
+      <div class="container">
+        <div class="glass gate-card">
+          <div class="gate-icon">💌</div>
+          <h2>This Letter Was Written Especially For You</h2>
+          <p class="serif" style="color:var(--ink-soft);">Please enter the secret password to continue.</p>
+          <div class="field" style="text-align:left; max-width:280px; margin:16px auto 0;">
+            <input id="gate-pass" type="password" placeholder="Enter password">
+          </div>
+          <button class="btn btn-primary" id="unlock-btn" style="margin-top:10px;">❤️ Unlock Letter</button>
+          <div class="gate-error" id="gate-error"></div>
+        </div>
+      </div>
+    </div>
+  `);
+  const tryUnlock = async ()=>{
+    const pass = document.getElementById('gate-pass').value;
+    try{
+      const obj = await decryptLetter(state.incomingPayload, pass);
+      viewEnvelope(obj, ctx);
+    }catch(e){
+      document.getElementById('gate-error').textContent = "Hmm... that's not quite right. Try again, my love.";
+    }
+  };
+  document.getElementById('unlock-btn').onclick = tryUnlock;
+  document.getElementById('gate-pass').addEventListener('keydown', e=>{ if(e.key==='Enter') tryUnlock(); });
+}
+
+/* ================= ENVELOPE ================= */
+function viewEnvelope(letterObj, ctx){
+  render(`
+    <div class="screen">
+      <div class="envelope-stage">
+        <div class="eyebrow">A Letter Has Arrived</div>
+        <div class="envelope" id="env">
+          <div class="env-glow"></div>
+          <div class="env-body"></div>
+          <div class="env-flap"></div>
+          <div class="seal">💌</div>
+        </div>
+        <div class="tap-hint">Tap the envelope to open it</div>
+      </div>
+    </div>
+  `);
+  document.getElementById('env').onclick = function(){
+    this.classList.add('open');
+    if(ctx && ctx.mode === 'backend' && ctx.row){ backendRegisterOpen(ctx.row); } // fire-and-forget analytics
+    setTimeout(()=>viewReadLetter(letterObj,{preview:false}, ctx), 900);
+  };
+}
+
+/* ================= READ LETTER (typewriter) ================= */
+function formatBody(text){
+  return esc(text)
+    .replace(/\*\*(.+?)\*\*/g,'<b>$1</b>')
+    .replace(/__(.+?)__/g,'<u>$1</u>')
+    .replace(/_(.+?)_/g,'<i>$1</i>');
+}
+function viewReadLetter(letterObj, opts, ctx){
+  const persistedReactions = (ctx && ctx.row && ctx.row.reactions) || {};
+  const ytId = extractYouTubeId(letterObj.youtube);
+  render(`
+    <div class="screen" style="align-items:flex-start; padding-top:60px;">
+      <div class="container">
+        ${opts.preview? `<div class="btn-row" style="margin-bottom:14px;"><button class="btn btn-ghost" onclick="viewCompose()">← Back to editing</button></div>`:''}
+        <div class="letter-paper" id="paper">
+          <div class="letter-head">
+            <div>
+              <div class="eyebrow">${letterObj.category}</div>
+              <div class="letter-title">${esc(letterObj.title)||'Untitled'}</div>
+            </div>
+            <div class="letter-meta">${letterObj.date}<br>To: ${esc(letterObj.to)||'—'}<br>From: ${esc(letterObj.from)||'—'}</div>
+          </div>
+          ${letterObj.photo? `<img class="letter-photo" src="${letterObj.photo}">`:''}
+          <div class="letter-body" id="body-target"></div>
+          <div style="position:relative;">
+            ${(letterObj.stickers||[]).map(s=>`<span style="position:absolute; left:${s.x}px; top:${s.y}px; font-size:26px;">${s.emoji}</span>`).join('')}
+          </div>
+          <div class="type-controls">
+            <button class="btn btn-ghost btn-sm" id="type-skip">Skip ⏭</button>
+            <button class="btn btn-ghost btn-sm" id="type-pause">Pause ⏸</button>
+            <button class="btn btn-ghost btn-sm" id="type-replay">Replay 🔁</button>
+            <select id="type-speed" class="btn btn-ghost btn-sm" style="box-shadow:none;">
+              <option value="8">Slow</option>
+              <option value="18" selected>Normal</option>
+              <option value="40">Fast</option>
+            </select>
+          </div>
+          ${ytId? `
+          <div class="music-block">
+            <div class="eyebrow">Our Song</div>
+            ${letterObj.dedication? `<div class="music-dedication">"${esc(letterObj.dedication)}"</div>`:''}
+            <div id="music-mount"></div>
+          </div>`:''}
+          <div class="reactions" id="reactions">
+            ${['❤️ Loved it','🥹 Made me cry','🥰 My Favorite','💌 Saving Forever','🐷 Pig Kiss'].map(r=>`<button class="reaction-btn" data-r="${r}">${r} <span class="reaction-count">${persistedReactions[r]||state.reactions[r]||0}</span></button>`).join('')}
+          </div>
+          <div class="btn-row" style="margin-top:26px;">
+            <button class="btn btn-primary" id="finish-reading">💖 Finish Reading</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `);
+
+  // typewriter
+  const target = document.getElementById('body-target');
+  const full = formatBody(letterObj.body || '');
+  const plain = (letterObj.body||'');
+  let i=0, timer=null, paused=false, speed=18;
+  function typeStep(){
+    if(paused) return;
+    i += Math.max(1, Math.round(speed/8));
+    target.innerHTML = formatBody(plain.slice(0,i)) + '<span class="cursor-blink">&nbsp;</span>';
+    if(i < plain.length){ timer = setTimeout(typeStep, 40); }
+    else { target.innerHTML = full; }
+  }
+  typeStep();
+  document.getElementById('type-skip').onclick=()=>{ clearTimeout(timer); target.innerHTML = full; };
+  document.getElementById('type-pause').onclick=(e)=>{ paused=!paused; e.target.textContent = paused? 'Resume ▶':'Pause ⏸'; if(!paused) typeStep(); };
+  document.getElementById('type-replay').onclick=()=>{ clearTimeout(timer); i=0; paused=false; typeStep(); };
+  document.getElementById('type-speed').onchange=(e)=>{ speed=+e.target.value; };
+
+  // music (no autoplay — user presses Play Our Song)
+  if(ytId){
+    const mount = document.getElementById('music-mount');
+    mount.innerHTML = `<button class="play-song-btn" id="play-song">▶ Play Our Song</button>`;
+    document.getElementById('play-song').onclick = ()=>{
+      mount.innerHTML = `<div class="yt-frame-wrap"><iframe src="https://www.youtube.com/embed/${ytId}?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>`;
+      pulseMusicVisuals();
+    };
+  }
+
+  document.getElementById('reactions').addEventListener('click', async e=>{
+    const btn = e.target.closest('[data-r]');
+    if(!btn) return;
+    const r = btn.dataset.r;
+    let count;
+    if(ctx && ctx.mode==='backend' && ctx.row){
+      const updated = await backendBumpReaction(ctx.id, ctx.row, r);
+      ctx.row.reactions = updated;
+      count = updated[r];
+    } else {
+      state.reactions[r] = (state.reactions[r]||0)+1;
+      count = state.reactions[r];
+    }
+    btn.classList.add('picked');
+    btn.querySelector('.reaction-count').textContent = count;
+    floatHearts(4);
+  });
+
+  document.getElementById('finish-reading').onclick = ()=>viewEnding(letterObj, ctx);
+}
+function pulseMusicVisuals(){
+  floatHearts(6);
+}
+
+/* ================= ENDING ================= */
+function viewEnding(letterObj, ctx){
+  const canComment = ctx && ctx.mode==='backend' && ctx.row;
+  const comments = canComment && Array.isArray(ctx.row.comments) ? ctx.row.comments : [];
+  render(`
+    <div class="screen">
+      <div class="container ending-stage">
+        <div class="bloom">🌸</div>
+        <h2 style="font-size:2rem; margin-top:10px;">Thank you for reading a piece of my heart.</h2>
+        <p class="serif" style="color:var(--ink-soft); margin-top:6px;">— ${esc(letterObj.from)||'someone who loves you'}</p>
+        ${canComment ? `
+        <div class="glass" style="text-align:left; padding:20px; margin-top:28px;">
+          <div class="eyebrow">Leave a Reply</div>
+          <div id="comment-list" style="margin:10px 0; display:flex; flex-direction:column; gap:8px;">
+            ${comments.length ? comments.map(c=>`<div class="music-block" style="margin:0; padding:10px 14px;"><div class="serif" style="font-style:italic;">"${esc(c.text)}"</div><div class="hint" style="margin-top:4px;">${new Date(c.at).toLocaleString()}</div></div>`).join('') : `<div class="hint">No replies yet — be the first.</div>`}
+          </div>
+          <div class="field" style="margin-bottom:8px;"><input id="comment-input" placeholder="Write a reply..."></div>
+          <button class="btn btn-outline btn-sm" id="comment-send">💌 Send Reply</button>
+        </div>` : ''}
+        <div class="btn-row" style="margin-top:26px;">
+          <button class="btn btn-outline" onclick="viewDashboard()">💌 Write One Back</button>
+          <button class="btn btn-ghost" onclick="viewWelcome()">Close</button>
+        </div>
+      </div>
+    </div>
+  `);
+  floatHearts(14);
+  if(canComment){
+    document.getElementById('comment-send').onclick = async ()=>{
+      const input = document.getElementById('comment-input');
+      const text = input.value.trim();
+      if(!text) return;
+      const btn = document.getElementById('comment-send');
+      btn.disabled = true; btn.textContent = 'Sending…';
+      try{
+        const updated = await backendAddComment(ctx.id, ctx.row, text);
+        ctx.row.comments = updated;
+        viewEnding(letterObj, ctx);
+      }catch(e){
+        btn.disabled = false; btn.textContent = '💌 Send Reply';
+        alert("Couldn't send that reply — try again in a moment.");
+      }
+    };
+  }
+}
+
+/* ================= INIT / ROUTING ================= */
+function viewLinkNotFound(){
+  render(`
+    <div class="screen">
+      <div class="container">
+        <div class="glass gate-card">
+          <div class="gate-icon">🥀</div>
+          <h2>This Letter Couldn't Be Found</h2>
+          <p class="serif" style="color:var(--ink-soft);">The link may have expired, been mistyped, or the site isn't connected to its database right now.</p>
+          <button class="btn btn-outline" style="margin-top:14px;" onclick="viewWelcome()">💌 Go Back</button>
+        </div>
+      </div>
+    </div>
+  `);
+}
+function viewLetterExpired(){
+  render(`
+    <div class="screen">
+      <div class="container">
+        <div class="glass gate-card">
+          <div class="gate-icon">🍂</div>
+          <h2>This Letter Has Closed</h2>
+          <p class="serif" style="color:var(--ink-soft);">It was set to expire, and that date has passed.</p>
+          <button class="btn btn-outline" style="margin-top:14px;" onclick="viewWelcome()">💌 Go Back</button>
+        </div>
+      </div>
+    </div>
+  `);
+}
+function viewLetterAlreadyOpened(){
+  render(`
+    <div class="screen">
+      <div class="container">
+        <div class="glass gate-card">
+          <div class="gate-icon">🕊️</div>
+          <h2>This Letter Was Meant to Be Opened Once</h2>
+          <p class="serif" style="color:var(--ink-soft);">It's already been read, and has sealed itself again.</p>
+          <button class="btn btn-outline" style="margin-top:14px;" onclick="viewWelcome()">💌 Go Back</button>
+        </div>
+      </div>
+    </div>
+  `);
+}
+function parseIncomingId(){
+  const m = location.pathname.match(/\/(?:letter|l)\/([A-Za-z0-9]+)\/?$/);
+  if(m) return { id: m[1], source:'backend' };
+  if(location.hash.startsWith('#L=')) return { id: decodeURIComponent(location.hash.slice(3)), source:'claude' };
+  return null;
+}
+async function openBackendLetter(id){
+  const row = await backendGetRow(id);
+  if(row.expires_at && new Date(row.expires_at) < new Date()){ viewLetterExpired(); return; }
+  if(row.one_time && (row.reads||0) >= 1){ viewLetterAlreadyOpened(); return; }
+  openIncoming(row.payload, { id, mode:'backend', row });
+}
+async function boot(){
+  const incoming = parseIncomingId();
+  if(incoming){
+    if(incoming.source === 'backend'){
+      if(!backendConfigured()){ viewLinkNotFound(); return true; }
+      try{ await openBackendLetter(incoming.id); }
+      catch(e){ viewLinkNotFound(); }
+      return true;
+    }
+    if(incoming.source === 'claude'){
+      if(!storageAvailable()){ viewLinkNotFound(); return true; }
+      try{ openIncoming(await resolveShortLink(incoming.id), { id: incoming.id, mode:'claude', row:null }); }
+      catch(e){ viewLinkNotFound(); }
+      return true;
+    }
+  }
+  // legacy links from before the short-ID system — still honored so old shares don't break
+  if(location.hash.startsWith('#letter=')){
+    openIncoming(decodeURIComponent(location.hash.slice('#letter='.length)), null);
+    return true;
+  }
+  return false;
+}
+
+seedAmbient();
+window.viewWelcome = viewWelcome;
+window.viewDashboard = viewDashboard;
+window.viewCompose = viewCompose;
+window.viewScrapbook = viewScrapbook;
+window.viewReadLetter = viewReadLetter;
+window.viewLinkNotFound = viewLinkNotFound;
+
+boot().then(handled=>{
+  if(!handled) viewWelcome();
+});
+</script>
+</body>
+</html>
